@@ -89,3 +89,44 @@ ON degrees.department_id = departments.id
 WHERE departments.name = "Dipartimento di Neuroscienze"
 
 -- 3 -- Selezionare tutti i corsi in cui insegna Fulvio Amato (id=44)
+SELECT teachers.id AS 'teacher_id', teachers.name, teachers.surname, teachers.phone, teachers.email, teachers.office_address, teachers.office_number, courses.id AS 'course_id', courses.name, courses.description, courses.period, courses.year, courses.cfu, courses.website
+FROM course_teacher
+JOIN teachers
+ON course_teacher.teacher_id = teachers.id
+JOIN courses
+ON course_teacher.course_id = courses.id
+WHERE teachers.id = 44
+
+
+-- 4 -- Selezionare tutti gli studenti con i dati relativi al corso di laurea a cui sono iscritti e il relativo dipartimento, in ordine alfabetico per cognome e nome
+SELECT students.id AS 'student_id', students.name, students.surname, students.date_of_birth, students.fiscal_code, students.enrolment_date, students.registration_number, students.email, degrees.id AS 'degree_id', degrees.name, degrees.level, degrees.address, degrees.email, degrees.website, departments.id AS 'department_id', departments.name, departments.address, departments.phone, departments.email, departments.website, departments.head_of_department
+FROM students
+JOIN degrees
+ON students.degree_id = degrees.id
+JOIN departments
+ON degrees.department_id = departments.id
+ORDER BY students.surname ASC
+
+--5 -- Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
+SELECT courses.id AS 'course_id', courses.name, courses.description, courses.period, courses.year, courses.cfu, courses.website, degrees.id AS 'degree_id', degrees.name, degrees.level, degrees.address, degrees.email, degrees.website, teachers.id AS 'teacher_id', teachers.name, teachers.surname, teachers.phone, teachers.email, teachers.office_address, teachers.office_number
+FROM courses
+JOIN degrees
+ON courses.degree_id = degrees.id
+JOIN course_teacher
+ON courses.id = course_teacher.course_id
+JOIN teachers
+ON course_teacher.teacher_id = teachers.id
+ORDER BY courses.year ASC
+
+-- 6 --  Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica 
+SELECT teachers.*, departments.name
+FROM degrees
+JOIN departments
+ON degrees.department_id = departments.id
+JOIN courses
+ON courses.degree_id = degrees.id
+JOIN course_teacher
+ON courses.id = course_teacher.course_id
+JOIN teachers
+ON course_teacher.teacher_id = teachers.id
+WHERE departments.name = "Dipartimento di Matematica"
