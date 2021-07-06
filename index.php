@@ -17,7 +17,22 @@ if ($conn && $conn->connect_error) {
     die();
 }
 
+
+//Statement
+$statement = $conn->prepare("INSERT INTO `departments` (`name`,`address`, `phone`, `email`, `website`, `head_of_department`) VALUES (?, ?, ?, ?, ?, ?)");
+$statement->bind_param("iss", $name, $address, $phone, $email, $website, $head_of_department);
+$name = "Dipartimento di Prova";
+$address = "L'inidirizzo e uno qualsiasi";
+$phone = "+03 8952 1711581";
+$email = "email@uni.it";
+$website = "www.dipartimento-di-prova.it";
+$head_of_department = "Ing Giorgio";
+$statement->execute();
+//var_dump($statement);
+
+
 //Query the database
+
 $sql = "SELECT * FROM departments";
 $results = $conn->query($sql);
 
